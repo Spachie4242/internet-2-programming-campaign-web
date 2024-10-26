@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <style>
+        /* CSS Styling for the form */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('campaign poster.jpg'); /* Replace with your image path */
+            background-size: cover;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+        }
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="email"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="peoples union party logo.JPG" alt="Logo" class="logo"> <!-- Replace with your logo path -->
+        <h1>Peoples Union Party</h1>
+    </div>
+    <div class="container">
+        <h2>Feedback Form</h2>
+        <form id="feedbackForm" action="submit_feedback.php" method="POST">
+            <!-- ID Field -->
+            <label for="id">ID:</label>
+            <input type="text" id="id" name="id" placeholder="Unique ID" required>
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required>
+            <span class="error" id="nameError"></span>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Your email" required>
+            <span class="error" id="emailError"></span>
+
+            <label for="feedback">Feedback:</label>
+            <textarea id="feedback" name="message" rows="5" placeholder="Your feedback" required></textarea>
+            <span class="error" id="feedbackError"></span>
+
+            <label for="rating">Rating:</label>
+            <select id="rating" name="rating" required>
+                <option value="" disabled selected>Choose your rating</option>
+                <option value="1">1 - Poor</option>
+                <option value="2">2 - Fair</option>
+                <option value="3">3 - Good</option>
+                <option value="4">4 - Very Good</option>
+                <option value="5">5 - Excellent</option>
+            </select>
+            <span class="error" id="ratingError"></span>
+
+           <!-- Submission Time Field -->
+            <label for="submission_time">Submission Time:</label>
+            <input type="datetime-local" id="submission_time" name="submission_time" required>
+            
+            <input type="submit" value="Submit Feedback">
+        </form>
+     </div>
+    <div class="footer">
+        <p>&copy; 2024 Peoples Union Party. All rights reserved.</p>
+    </div>
+    <script>
+        // JavaScript for form validation and adding submission time
+        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+            let valid = true;
+
+            // Clear previous errors
+            document.getElementById('idError').textContent = '';
+            document.getElementById('nameError').textContent = '';
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('feedbackError').textContent = '';
+            document.getElementById('ratingError').textContent = '';
+
+            // Validate ID
+            const id = document.getElementById('id').value;
+            if (id.trim() === '') {
+                document.getElementById('idError').textContent = 'ID is required.';
+                valid = false;
+            }
+
+            // Validate Name
+            const name = document.getElementById('name').value;
+            if (name.trim() === '') {
+                document.getElementById('nameError').textContent = 'Name is required.';
+                valid = false;
+            }
+
+            // Validate Email
+            const email = document.getElementById('email').value;
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!emailPattern.test(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email.';
+                valid = false;
+            }
+
+            // Validate Feedback
+            const feedback = document.getElementById('feedback').value;
+            if (feedback.trim() === '') {
+                document.getElementById('feedbackError').textContent = 'Feedback is required.';
+                valid = false;
+            }
+
+            // Validate Rating
+            const rating = document.getElementById('rating').value;
+            if (rating === '') {
+                document.getElementById('ratingError').textContent = 'Please select a rating.';
+                valid = false;
+            }
+
+            // Add submission time
+            const submissionTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+            document.getElementById('submission_time').value = submissionTime;
+
+            if (!valid) {
+                event.preventDefault(); // Prevent form submission if validation fails
+            }
+        });
+    </script>
+</body>
+</html>
